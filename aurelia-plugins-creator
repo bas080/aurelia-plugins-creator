@@ -1,0 +1,17 @@
+#!/bin/bash
+
+doc="""
+creates a aurelia project directory with the necessary scaffolding and such
+"""
+
+aurelia-plugin-creator() {
+  git clone https://github.com/aurelia/skeleton-plugin && for path in $@; do
+    mkdir $path && cp -r skeleton-plugin/* $path
+    (cd $path && jspm install && npm install && npm install gulp && gulp test) || exit 1
+  done && \
+  rm -rf .git && \
+  rm -rf skeleton-plugin
+  return $?
+}
+
+aurelia-plugin-creator "$@"
